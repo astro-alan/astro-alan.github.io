@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ANU Centre for Gravitational Astrophysics – Gravitational Lab Temperature Monitoring System</title>
 
-  <!-- Bootstrap (optional for styling) -->
+  <!-- Bootstrap (for styling, optional) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Chart.js -->
@@ -32,17 +32,16 @@
 
     async function fetchBOMData() {
       try {
-        const response = await fetch('https://api.weather.bom.gov.au/v1/locations/canberra/observations');
+        const response = await fetch('https://www.bom.gov.au/fwo/IDN60901/IDN60901.94926.json');
         const data = await response.json();
         const obs = data.observations.data;
 
-        const timestamps = obs.map(entry => entry.local_date_time);
-        const temperatures = obs.map(entry => entry.air_temp);
+        const timestamps = obs.slice(-72).map(entry => entry.local_date_time);
+        const temperatures = obs.slice(-72).map(entry => entry.air_temp);
         const lastUpdated = obs[obs.length - 1].local_date_time;
 
         const ctx = document.getElementById('bomTempChart').getContext('2d');
 
-        // Destroy previous chart if it exists
         if (chartInstance) {
           chartInstance.destroy();
         }
@@ -91,10 +90,10 @@
       }
     }
 
-    // Initial load
+    // Load initially
     fetchBOMData();
 
-    // Auto-refresh every 5 minutes (300,000 ms)
+    // Refresh every 5 minutes
     setInterval(fetchBOMData, 300000);
   </script>
 
