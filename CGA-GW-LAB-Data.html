@@ -35,7 +35,6 @@
     let timestamps = [], temps = [];
 
     function formatTimestamp(raw) {
-      // raw = "20250730133000" → "07/30/2025 - 13:30:00.0"
       const year = raw.slice(0, 4);
       const month = raw.slice(4, 6);
       const day = raw.slice(6, 8);
@@ -55,9 +54,7 @@
         const json = await response.json();
         const obs = json.observations.data;
 
-        // Slice last 72 records (approx 3 days), reverse for newest on right
         const recent = obs.slice(-72);
-
         timestamps = recent.map(e => readableLabel(e.local_date_time_full));
         temps = recent.map(e => e.air_temp);
 
@@ -75,7 +72,6 @@
         const formatted = formatTimestamp(latest.local_date_time_full);
         document.getElementById("updated-time").textContent = `Last updated: ${formatted}`;
 
-        // Plot chart
         if (chartInstance) chartInstance.destroy();
         const ctx = document.getElementById('bomTempChart').getContext('2d');
         chartInstance = new Chart(ctx, {
@@ -125,7 +121,7 @@
     }
 
     fetchData();
-    setInterval(fetchData, 300000); // Refresh every 5 min
+    setInterval(fetchData, 300000); // Every 5 min
   </script>
 </body>
 </html>
