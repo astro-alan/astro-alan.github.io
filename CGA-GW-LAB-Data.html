@@ -46,24 +46,14 @@
     async function loadBOMData() {
       try {
         console.log("Fetching BOM data...");
-        const proxyUrl = "https://corsproxy.io/?";
-        const bomUrl = "https://reg.bom.gov.au/fwo/IDN60903/IDN60903.94926.json";
-        
-        const response = await fetch(proxyUrl + encodeURIComponent(bomUrl));
+        const proxy = "https://corsproxy.io/?";
+        const url = "https://reg.bom.gov.au/fwo/IDN60903/IDN60903.94926.json";
+        const response = await fetch(proxy + encodeURIComponent(url));
 
-        if (!response.ok) {
-          throw new Error(`Network error: ${response.status} ${response.statusText}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         const data = await response.json();
-        if (!data || !data.observations || !data.observations.data) {
-          throw new Error("Invalid JSON structure: Missing observations.data");
-        }
-
-        const records = data.observations.data.slice(-72);
-        if (records.length === 0) {
-          throw new Error("No observation records found.");
-        }
+        const records = data?.observations?.data?.slice(-72);
+        if (!records || records.length === 0) throw new Error("No valid observations found.");
 
         labels = records.map(e => readableLabel(e.local_date_time_full));
         temps = records.map(e => e.air_temp);
@@ -79,7 +69,6 @@
         document.getElementById("temp-mean").textContent = mean;
 
         if (chartInstance) chartInstance.destroy();
-
         const ctx = document.getElementById("chart").getContext("2d");
         chartInstance = new Chart(ctx, {
           type: "line",
@@ -136,7 +125,7 @@
     }
 
     loadBOMData();
-    setInterval(loadBOMData, 300000); // every 5 minutes
+    setInterval(loadBOMData, 300000); // refresh every 5 min
   </script>
 </body>
 </html>
