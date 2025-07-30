@@ -48,6 +48,7 @@
         console.log("Fetching BOM data...");
         const proxyUrl = "https://corsproxy.io/?";
         const bomUrl = "https://reg.bom.gov.au/fwo/IDN60903/IDN60903.94926.json";
+        
         const response = await fetch(proxyUrl + encodeURIComponent(bomUrl));
 
         if (!response.ok) {
