@@ -61,10 +61,8 @@
         document.getElementById("temp-max").textContent = max;
         document.getElementById("temp-mean").textContent = mean;
 
-        // Destroy old chart
         if (chartInstance) chartInstance.destroy();
 
-        // Create chart
         const ctx = document.getElementById("chart").getContext("2d");
         chartInstance = new Chart(ctx, {
           type: "line",
