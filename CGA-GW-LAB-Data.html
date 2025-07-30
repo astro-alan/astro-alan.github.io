@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ANU Centre for Gravitational Astrophysics – Gravitational Lab Temperature Monitoring System</title>
 
-  <!-- Bootstrap (optional) -->
+  <!-- Bootstrap (for styling) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -17,15 +16,14 @@
     <h1 class="mb-4 text-center">ANU Centre for Gravitational Astrophysics</h1>
     <h3 class="mb-5 text-center">Gravitational Lab Temperature Monitoring System</h3>
 
-    <!-- BOM Chart -->
     <div class="card mb-4">
       <div class="card-body">
-        <h5 class="card-title">Live BOM Temperature (Canberra, ACT)</h5>
+        <h5 class="card-title">Live BOM Temperature (Canberra Airport)</h5>
         <canvas id="bomTempChart" height="100"></canvas>
         <p class="text-muted mt-2" id="updated-time">Loading data...</p>
 
         <div class="mt-4">
-          <strong>Statistics (last 72 observations):</strong><br />
+          <strong>Statistics (last ~72 hours):</strong><br />
           Min: <span id="temp-min">–</span> °C<br />
           Max: <span id="temp-max">–</span> °C<br />
           Mean: <span id="temp-mean">–</span> °C
@@ -38,13 +36,12 @@
 
   <script>
     let chartInstance = null;
-    let currentTimestamps = [];
-    let currentTemperatures = [];
+    let timestamps = [], temps = [];
 
-    function calculateStats(temps) {
-      const min = Math.min(...temps);
-      const max = Math.max(...temps);
-      const mean = temps.reduce((a, b) => a + b, 0) / temps.length;
+    function calculateStats(arr) {
+      const min = Math.min(...arr);
+      const max = Math.max(...arr);
+      const mean = arr.reduce((a, b) => a + b, 0) / arr.length;
       return {
         min: min.toFixed(1),
         max: max.toFixed(1),
@@ -52,36 +49,28 @@
       };
     }
 
-    function updateStats(temps) {
-      const stats = calculateStats(temps);
-      document.getElementById('temp-min').textContent = stats.min;
-      document.getElementById('temp-max').textContent = stats.max;
-      document.getElementById('temp-mean').textContent = stats.mean;
-    }
-
     async function fetchBOMData() {
       try {
-        const response = await fetch('https://www.bom.gov.au/fwo/IDN60901/IDN60901.94926.json');
+        const response = await fetch('http://reg.bom.gov.au/fwo/IDN60903/IDN60903.94926.json');
         const data = await response.json();
-        const obs = data.observations.data;
+        const obs = data.observations.data.slice(-72); // last ~72 entries (approx. 3 days)
 
-        currentTimestamps = obs.slice(-72).map(entry => entry.local_date_time);
-        currentTemperatures = obs.slice(-72).map(entry => entry.air_temp);
+        timestamps = obs.map(e => e.local_date_time);
+        temps = obs.map(e => e.air_temp);
         const lastUpdated = obs[obs.length - 1].local_date_time;
 
+        // Destroy old chart
+        if (chartInstance) chartInstance.destroy();
+
+        // Plot chart
         const ctx = document.getElementById('bomTempChart').getContext('2d');
-
-        if (chartInstance) {
-          chartInstance.destroy();
-        }
-
         chartInstance = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: currentTimestamps,
+            labels: timestamps,
             datasets: [{
               label: 'Temperature (°C)',
-              data: currentTemperatures,
+              data: temps,
               borderColor: 'rgba(75, 192, 192, 1)',
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               tension: 0.3,
@@ -112,31 +101,38 @@
           }
         });
 
+        // Display update time
         document.getElementById("updated-time").innerText = `Last updated: ${lastUpdated}`;
-        updateStats(currentTemperatures);
+
+        // Update statistics
+        const stats = calculateStats(temps);
+        document.getElementById("temp-min").innerText = stats.min;
+        document.getElementById("temp-max").innerText = stats.max;
+        document.getElementById("temp-mean").innerText = stats.mean;
+
       } catch (error) {
-        document.getElementById("updated-time").innerText = "Failed to fetch BOM data.";
         console.error("Error fetching BOM data:", error);
+        document.getElementById("updated-time").innerText = "Failed to fetch BOM data.";
       }
     }
 
     function exportCSV() {
       let csv = 'Timestamp,Temperature (°C)\n';
-      for (let i = 0; i < currentTimestamps.length; i++) {
-        csv += `${currentTimestamps[i]},${currentTemperatures[i]}\n`;
-      }
-
+      timestamps.forEach((t, i) => {
+        csv += `${t},${temps[i]}\n`;
+      });
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'bom_temperature_data.csv';
-      link.click();
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'canberra_airport_temperature.csv';
+      a.click();
       URL.revokeObjectURL(url);
     }
 
+    // Load now and refresh every 5 min
     fetchBOMData();
-    setInterval(fetchBOMData, 300000); // every 5 minutes
+    setInterval(fetchBOMData, 300000);
   </script>
 
 </body>
