@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Australian National Student Swimming Team</title>
+  <meta name="description" content="Official site for the Australian National Student Swimming Team." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#121b2f;
+      --text:#eaf0ff;
+      --muted:#b8c3e6;
+      --accent:#64b5ff;
+      --line: rgba(255,255,255,.12);
+      --radius: 18px;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --max: 1040px;
+      --pad: 22px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(100,181,255,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(126,87,194,.25), transparent 60%),
+        linear-gradient(180deg, #070b14 0%, var(--bg) 45%, #070b14 100%);
+    }
+    a{color:inherit}
+    header{
+      padding: 54px 16px 18px;
+    }
+    .wrap{max-width:var(--max); margin:0 auto;}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding: 10px 14px;
+      border:1px solid var(--line); border-radius: var(--radius);
+      background: rgba(18,27,47,.55);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(100,181,255,.95), rgba(126,87,194,.9));
+      box-shadow: 0 10px 25px rgba(100,181,255,.22);
+      display:grid; place-items:center;
+      font-weight:800;
+    }
+    nav{display:flex; gap:10px; flex-wrap:wrap}
+    nav a{
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius: 12px;
+      border:1px solid transparent;
+      color: var(--muted);
+    }
+    nav a:hover{border-color: var(--line); color: var(--text);}
+    .hero{
+      margin-top: 18px;
+      padding: 42px 18px 10px;
+    }
+    .heroCard{
+      border:1px solid var(--line);
+      background: rgba(18,27,47,.55);
+      backdrop-filter: blur(10px);
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: var(--shadow);
+      padding: 34px 26px;
+      overflow:hidden;
+      position:relative;
+    }
+    .heroCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(500px 260px at 15% 0%, rgba(100,181,255,.25), transparent 55%),
+                  radial-gradient(380px 220px at 80% 10%, rgba(126,87,194,.18), transparent 60%);
+      pointer-events:none;
+    }
+    h1{margin:0 0 10px; font-size: clamp(28px, 3.8vw, 44px); letter-spacing:-.02em;}
+    .sub{
+      margin:0 0 18px;
+      color: var(--muted);
+      font-size: clamp(14px, 1.5vw, 18px);
+      line-height:1.45;
+      max-width: 70ch;
+      position:relative;
+    }
+    .ctaRow{display:flex; gap:12px; flex-wrap:wrap; position:relative;}
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+    }
+    .btn.primary{
+      border-color: transparent;
+      background: linear-gradient(135deg, rgba(100,181,255,.95), rgba(126,87,194,.9));
+      color:#07101f;
+      font-weight:700;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    main{padding: 10px 16px 60px}
+    section{margin-top: 18px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 12;
+      border:1px solid var(--line);
+      background: rgba(18,27,47,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding: var(--pad);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{margin:0 0 10px; font-size: 20px}
+    .muted{color: var(--muted); line-height: 1.55}
+    .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px}
+    .pill{
+      border:1px solid var(--line);
+      padding: 8px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+      font-size: 13px;
+    }
+    .coach{
+      display:grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    .avatar{
+      width:86px; height:86px;
+      border-radius: 22px;
+      border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(100,181,255,.25), rgba(126,87,194,.18));
+      display:grid; place-items:center;
+      font-weight:800;
+      color: var(--text);
+    }
+    .coach h3{margin:0 0 6px; font-size: 18px}
+    .small{font-size: 13px; color: var(--muted); margin:0 0 10px}
+    footer{
+      padding: 22px 16px 36px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: rgba(0,0,0,.15);
+    }
+    @media (min-width: 860px){
+      .card.span6{grid-column: span 6;}
+      .card.span7{grid-column: span 7;}
+      .card.span5{grid-column: span 5;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="#top">
+          <div class="logo">AN</div>
+          <div>
+            <div style="font-weight:800; line-height:1;">Australian National Student Swimming Team</div>
+            <div style="color:var(--muted); font-size:13px; line-height:1.2;">Training • Team • Community</div>
+          </div>
+        </a>
+        <nav>
+          <a href="#team">Meet our team</a>
+          <a href="#coach">Coach</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+
+      <div class="hero" id="top">
+        <div class="heroCard">
+          <h1>Swim fast. Study hard. Show up for each other.</h1>
+          <p class="sub">
+            Welcome to the Australian National Student Swimming Team — a student-driven squad built on
+            strong sessions, smart technique, and good vibes on deck.
+          </p>
+          <div class="ctaRow">
+            <a class="btn primary" href="#team">Meet the team</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section id="team">
+        <div class="grid">
+          <div class="card span7">
+            <h2>Meet our team</h2>
+            <p class="muted">
+              We’re a mix of students from across disciplines who share one thing in common:
+              we love the water. Whether you’re chasing PBs, learning starts, or just here for consistent training,
+              you’re welcome.
+            </p>
+            <div class="pillRow">
+              <div class="pill">Squad training</div>
+              <div class="pill">Technique focus</div>
+              <div class="pill">Sprint + distance lanes</div>
+              <div class="pill">Beginner-friendly</div>
+            </div>
+          </div>
+
+          <div class="card span5">
+            <h2>What we do</h2>
+            <p class="muted">
+              Structured sets, skill work, and a supportive team culture. Bring your goals — we’ll bring the pace clock.
+            </p>
+            <div class="pillRow">
+              <div class="pill">Freestyle</div>
+              <div class="pill">Backstroke</div>
+              <div class="pill">Breaststroke</div>
+              <div class="pill">Butterfly</div>
+              <div class="pill">IM</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="coach">
+        <div class="grid">
+          <div class="card">
+            <h2>Swimming Coach</h2>
+            <div class="coach">
+              <div class="avatar">AC</div>
+              <div>
+                <h3>Alan Chan</h3>
+                <p class="small">Toronto, Canada • Coach</p>
+                <p class="muted">
+                  Alan is from Toronto, Canada and took up swimming as a kid. He competed through regional and
+                  provincial levels, including with Team Ontario. He’s now a research student at the Australian
+                  National University (ANU) in Astronomy and Astrophysics — and still believes the pool is the best
+                  place to clear your head (and occasionally question your life choices during a hard set).
+                </p>
+                <div class="pillRow">
+                  <div class="pill">Technique & efficiency</div>
+                  <div class="pill">Race strategy</div>
+                  <div class="pill">Consistency > hero days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="grid">
+          <div class="card">
+            <h2>Contact</h2>
+            <p class="muted">
+              Want to join, collaborate, or ask about training times? Add your contact details below.
+            </p>
+
+            <!-- Replace the email address with yours (or remove this section). -->
+            <p class="muted">
+              Email: <a href="mailto:example@email.com">example@
