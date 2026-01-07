@@ -140,13 +140,13 @@
       align-items:start;
     }
     .avatar{
-      width:86px; height:86px;
+      width:86px;
+      height:86px;
       border-radius: 22px;
       border:1px solid var(--line);
-      background: linear-gradient(135deg, rgba(100,181,255,.25), rgba(126,87,194,.18));
-      display:grid; place-items:center;
-      font-weight:800;
-      color: var(--text);
+      object-fit: cover;
+      display:block;
+      background: rgba(255,255,255,.06);
     }
     .coach h3{margin:0 0 6px; font-size: 18px}
     .small{font-size: 13px; color: var(--muted); margin:0 0 10px}
@@ -237,7 +237,11 @@
           <div class="card">
             <h2>Swimming Coach</h2>
             <div class="coach">
-              <div class="avatar">AC</div>
+              <img
+                class="avatar"
+                src="ID_Alan_Chan.jpg"
+                alt="Alan Chan – Head Coach"
+                />
               <div>
                 <h3>Alan Chan</h3>
                 <p class="small">Canberra, ACT • Head Coach</p>
@@ -268,4 +272,6 @@
 
             <!-- Replace the email address with yours (or remove this section). -->
             <p class="muted">
-              Email: <a href="mailto:alanglchan@outlook.com">info@ANSST.anu.edu.au
+              Email: <a href="mailto:alanglchan@outlook.com">info@ANSST.anu.edu.au</a>
+            </p>
+
